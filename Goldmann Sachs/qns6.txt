@@ -1,0 +1,29 @@
+class Solution {
+public:
+    bool divides(string a, string b) {
+        int n = a.size(), m = b.size();
+        if(n % m != 0) return false;
+        string temp;
+        for(int i = 0 ; i < n/m ; i++) {
+            temp += b;
+        }
+        
+        if(a == temp) return true;
+        
+        return false;
+    }
+    string gcdOfStrings(string str1, string str2) {
+        if(str1 + str2 != str2 + str1) return "";
+        if(str2.size() > str1.size()) {
+            string temp = str2;
+            str2 = str1;
+            str1 = temp;
+        }
+        int n = str2.size();
+        for(int i = n ; i > 0 ; i--) {
+            string temp = str2.substr(0, i);
+            if(divides(str1, temp) && divides(str2, temp)) return temp;
+        }
+        return "";
+    }
+};
