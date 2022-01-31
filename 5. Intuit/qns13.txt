@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int find(int ro, vector<vector<int>>& grid) {
+        int n = grid.size();
+        
+        for(int i = ro+1 ; i < n ; i++) {
+            bool found = true;
+            for(int j = ro+1 ; j < n ; j++) {
+                if(grid[i][j]) {
+                    found = false;
+                    break;
+                }
+            }
+            if(found) return i;
+        }
+        return -1;
+    }
+    void doSwap(int start, int end, vector<vector<int>>& grid) {
+        for(int i = end ; i > start ; i--) {
+            swap(grid[i], grid[i-1]);
+        }
+    }
+    int minSwaps(vector<vector<int>>& grid) {
+        int n = grid.size(), ans = 0;
+        
+        for(int i = 0 ; i < n-1 ; i++) {
+            for(int j = i+1 ; j < n ; j++) {
+                if(grid[i][j]) {
+                    int row = find(i, grid);
+                    if(row == -1) return -1;
+                    doSwap(i, row, grid);
+                    ans += (row-i);
+                }
+            }
+        }
+        
+        return ans;
+    }
+};

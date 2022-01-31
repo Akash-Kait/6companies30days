@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool isValid(int k, vector<int> piles, int h) {
+        int i = 0, hrs = 0;
+        for(auto e : piles) {
+            hrs += ceil((double)e/(double)k);
+        }
+        if(hrs <= h) return true;
+        else return false;
+    }
+    int minEatingSpeed(vector<int>& piles, int h) {
+        int n = piles.size(), hi = 0;
+        
+        for(auto e : piles) hi = max(hi, e);
+        
+        int lo = 1, ans = hi;
+        
+        while(lo <= hi) {
+            int mid = (lo + hi) / 2;
+            
+            if(isValid(mid, piles, h)) {
+                ans = min(ans, mid);
+                hi = mid-1;
+            }
+            else lo = mid+1;
+        }
+        
+        return ans;
+    }
+};

@@ -1,0 +1,23 @@
+struct Compare {
+    bool operator()(string& s1, string& s2) {
+        if(s1.size() != s2.size()) return s1.size() < s2.size();
+        int n = s1.size();
+        for(int i = 0 ; i < n ; i++) {
+            if(s1[i] != s2[i]) return s1[i] < s2[i];
+        }
+        
+        return true;
+    }
+};
+class Solution {
+public:
+    string kthLargestNumber(vector<string>& nums, int k) {
+        priority_queue<string, vector<string>, Compare> pq;
+        
+        for(auto e : nums) pq.push(e);
+        
+        for(int i = 0 ; i < k-1 ; i++) pq.pop();
+        
+        return pq.top();
+    }
+};

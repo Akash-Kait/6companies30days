@@ -1,0 +1,65 @@
+// { Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+class Solution
+{
+    public:
+    int row[8] = {-1, -1, -1, 0, 1, 1, 1, 0};
+    int col[8] = {-1, 0, 1, 1, 1, 0, -1, -1};
+    int helper(vector<vector<int>>& grid, int i, int j, vector<vector<bool>>& visited) {
+        int count = 1, n = grid.size(), m = grid[0].size();
+        
+        // cout<<i<<"-"<<j<<"=";
+        for(int k = 0 ; k < 8 ; k++) {
+            int newRow = row[k] + i, newCol = col[k] + j;
+            
+            if(newRow >= 0 && newRow < n && newCol >= 0 && newCol < m && grid[newRow][newCol] == 1 && !visited[newRow][newCol]) {
+                // cout<<newRow<<"-"<<newCol<<" ";
+                visited[newRow][newCol] = true;
+                count += helper(grid, newRow, newCol, visited);
+            }
+        }
+        
+        return count;
+    }
+    //Function to find unit area of the largest region of 1s.
+    int findMaxArea(vector<vector<int>>& grid) {
+        // Code here
+        int n = grid.size(), m = grid[0].size();
+        vector<vector<bool> > visited(n, vector<bool> (m, false));
+        int ans = 0;
+        
+        for(int i = 0 ; i < n ; i++) {
+            for(int j = 0 ; j < m ; j++) {
+                if(grid[i][j] == 1 && !visited[i][j]) {
+                    visited[i][j] = true;
+                    ans = max(ans, helper(grid, i, j, visited));
+                }
+            }
+        }
+        
+        return ans;
+    }
+};
+
+// { Driver Code Starts.
+int main(){
+	int tc;
+	cin >> tc;
+	while(tc--){
+		int n, m;
+		cin >> n >> m;
+		vector<vector<int>>grid(n, vector<int>(m, -1));
+		for(int i = 0; i < n; i++){
+			for(int j = 0; j < m; j++){
+				cin >> grid[i][j];
+			}
+		}
+		Solution obj;
+		int ans = obj.findMaxArea(grid);
+		cout << ans << "\n";
+	}
+	return 0;
+}  // } Driver Code Ends

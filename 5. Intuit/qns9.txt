@@ -1,0 +1,43 @@
+int row[] = {-1, 0, 1, 0};
+int col[] = {0, 1, 0, -1};
+class Solution {
+public:
+    void canFlow(int i, int j, vector<vector<int>>& heights, vector<vector<bool>>& vis) {
+        if(vis[i][j]) return;
+        
+        vis[i][j] = true;
+        int n = heights.size(), m = heights[0].size();
+        
+        for(int k = 0 ; k < 4 ; k++) {
+            int nextRow = i+row[k], nextCol = j+col[k];
+            
+            if(nextRow >= 0 && nextRow < n && nextCol >= 0 && nextCol < m && heights[nextRow][nextCol] >= heights[i][j]) {
+                canFlow(nextRow, nextCol, heights, vis);
+            }
+        }
+        
+        return;
+    }
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        int n = heights.size(), m = heights[0].size();
+        vector<vector<int>> results;
+        vector<vector<bool>> vis1(n, vector<bool> (m, false));
+        vector<vector<bool>> vis2(n, vector<bool> (m, false));
+        for(int i = 0 ; i < n ; i++) {
+            canFlow(i, 0, heights, vis1);
+            canFlow(i, m-1, heights, vis2);
+        }
+        for(int j = 0 ; j < m ; j++) {
+            canFlow(0, j, heights, vis1);
+            canFlow(n-1, j, heights, vis2);
+        }
+        
+        for(int i = 0 ; i < n ; i++) {
+            for(int j = 0 ; j < m ; j++) {
+                if(vis1[i][j] && vis2[i][j]) results.push_back(vector<int> {i, j});
+            }
+        }
+        
+        return results;
+    }
+};

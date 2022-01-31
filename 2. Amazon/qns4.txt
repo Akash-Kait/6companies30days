@@ -1,0 +1,55 @@
+// { Driver Code Starts
+// Initial Template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+// User function Template for C++
+
+using trpl = pair<pair<int, int>, int>;
+class Solution{
+public:
+    map<string, pair<int, string>> dp;
+    pair<int, string> helper(int p[], int i, int j) {
+        if(i+1 == j) return {0, "" + string(1, i + 'A')};
+        
+        string key = to_string(i) + "|" + to_string(j);
+        if(dp.find(key) != dp.end()) return dp[key];
+        
+        int cost = INT_MAX;
+        string s;
+        for(int k = i+1; k < j ; k++) {
+            auto p1 = helper(p, i, k), p2 = helper(p, k, j);
+            
+            if(p1.first + p2.first + p[i]*p[k]*p[j] < cost) {
+                cost = p1.first + p2.first + p[i]*p[k]*p[j];
+                s = p1.second + p2.second;
+            }
+        }
+        
+        return dp[key] = {cost, "(" + s + ")"};
+    }
+    string matrixChainOrder(int p[], int n){
+        // code here
+        return helper(p, 0, n-1).second;
+    }
+};
+
+// { Driver Code Starts.
+
+int main(){
+    int t;
+    cin>>t;
+    while(t--){
+        int n;
+        cin>>n;
+        int p[n];
+        for(int i = 0;i < n;i++)
+            cin>>p[i];
+        
+        Solution ob;
+        cout<<ob.matrixChainOrder(p, n)<<"\n";
+    }
+    return 0;
+}  // } Driver Code Ends

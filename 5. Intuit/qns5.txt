@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int isValid(vector<int>& nums, int m, int mid) {
+        int sum = 0;
+        
+        for(auto e : nums) {
+            if(e > mid) return false;
+            if(sum + e > mid) {
+                m--;
+                sum = e;
+            }
+            else sum += e;
+            if(m == 0) return false;
+        }
+        
+        return true;
+    }
+    int splitArray(vector<int>& nums, int m) {
+        int n = nums.size(), sum = 0, minSum = -1;
+        
+        for(auto e : nums) {
+            minSum = (minSum, e);
+            
+            sum += e;
+        }
+        
+        int lo = minSum, hi = sum, ans = sum;
+        while(lo <= hi) {
+            int mid = (lo + hi) / 2;
+            // cout<<mid<<endl;
+            if(isValid(nums, m, mid)) {
+                hi = mid-1;
+                ans = min(ans, mid);
+            }
+            else lo = mid+1;
+        }
+        
+        return ans;
+    }
+};

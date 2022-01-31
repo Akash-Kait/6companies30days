@@ -1,0 +1,47 @@
+int row[] = {-1, 0, 1, 0};
+int col[] = {0, 1, 0, -1};
+class Solution {
+public:
+    int maxDistance(vector<vector<int>>& grid) {
+        int n = grid.size(), ans = -1;
+        
+        queue<pair<pair<int,int>, int>> q;
+        int zeroes = 0;
+        for(int i = 0 ; i < n ; i++) {
+            for(int j = 0 ; j < n ; j++) {
+                if(grid[i][j] == 1) {
+                    q.push({{i, j}, 0});
+                }
+                else {
+                    grid[i][j] = INT_MAX;
+                    zeroes++;
+                }
+            }
+        }
+        
+        if(q.empty() || zeroes == 0) return -1;
+        
+        while(!q.empty()) {
+            auto p = q.front();
+            q.pop();
+            
+            int ro = p.first.first;
+            int co = p.first.second;
+            int dist = p.second;
+            
+            
+            for(int i = 0 ; i < 4 ; i++) {
+                int newRow = ro+row[i], newCol = co+col[i];
+                
+                if(newRow >= 0 && newRow < n && newCol >= 0 && newCol < n && grid[newRow][newCol] > dist+1) {
+                    grid[newRow][newCol] = dist+1;
+                    q.push({{newRow, newCol}, dist+1});
+                    ans = max(ans, dist+1);
+                }
+            }
+            
+        }
+        
+        return ans;
+    }
+};

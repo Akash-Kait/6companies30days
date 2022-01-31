@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int longestMountain(vector<int>& arr) {
+        int n = arr.size();
+        bool up = true, repeat = false;
+        int ans = 0, lo = INT_MAX, hi = -1;
+        
+        
+        for(int i = 1 ; i < n ; i++) {
+            if(arr[i] < arr[i-1]) {
+                if(repeat) {
+                    repeat = false;
+                    lo = INT_MAX;
+                    hi = -1;
+                    continue;
+                }
+                if(up) {
+                    up = false;
+                }
+                hi = i;
+            }
+            else if(arr[i] > arr[i-1]) {
+                if(!up) {
+                    ans = max(ans, hi - lo + 1);
+                    lo = i-1;
+                    up = true;
+                }
+                else lo = min(lo, i-1);
+                repeat = false;
+            }
+            else {
+                if(!up) ans = max(ans, hi - lo + 1);
+                while(i+1 < n && arr[i+1] == arr[i]) i++;
+                lo = i;
+                up = true;
+                repeat = true;
+            }
+        }
+        if(lo != INT_MAX && !up) ans = max(ans, hi - lo + 1);
+        return ans;
+    }
+};

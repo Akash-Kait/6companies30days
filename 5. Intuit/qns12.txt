@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int dfs(int i, vector<vector<int>> &adj, vector<bool> &vis, vector<int>& ans, vector<bool>& stack) {
+        if(stack[i]) return -1;
+        if(vis[i]) return 1;
+        
+        vis[i] = true;
+        stack[i] = true;
+        
+        for(auto e : adj[i]) {
+            if(dfs(e, adj, vis, ans, stack) == -1) return -1;
+        }
+        stack[i] = false;
+        ans.push_back(i);
+        return 1;
+    }
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> ans;
+        int n = prerequisites.size();
+        vector<vector<int>> adj(numCourses, vector<int> ());
+        
+        for(int i = 0 ; i < n ; i++) {
+            adj[prerequisites[i][0]].push_back(prerequisites[i][1]);
+        }
+        
+        vector<bool> vis(numCourses, false);
+        vector<bool> stack(numCourses, false);
+        for(int i = 0 ; i < numCourses ; i++) {
+            if(!vis[i]) if(dfs(i, adj, vis, ans, stack) == -1) return vector<int> ();
+        }
+        
+        return ans;
+    }
+};

@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool isValid(int mid, vector<int>& weights, int days) {
+        int weight = 0;
+        
+        for(auto e : weights) {
+            if(e > mid) return false;
+            if(weight + e > mid) {
+                if(days) {
+                    days--;
+                    weight = e;
+                }
+                else return false;
+            }
+            else weight += e;
+        }
+        return true;
+    }
+    int shipWithinDays(vector<int>& weights, int days) {
+        int weight = 0, n = weights.size();
+        
+        for(auto e : weights) weight += e;
+        
+        int lo = 1, hi = weight, ans = weight;
+        
+        while(lo <= hi) {
+            int mid = (lo + hi) / 2;
+            
+            if(isValid(mid, weights, days-1)) {
+                hi = mid - 1;
+                ans = min(ans, mid);
+            }
+            else lo = mid + 1;
+        }
+        
+        return ans;
+    }
+};

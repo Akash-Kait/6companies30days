@@ -1,0 +1,87 @@
+// { Driver Code Starts
+#include <bits/stdc++.h> 
+using namespace std; 
+
+ // } Driver Code Ends
+class Solution
+{   
+    public: 
+    //Function to return a list of integers denoting spiral traversal of matrix.
+    vector<int> spirallyTraverse(vector<vector<int> > matrix, int r, int c) 
+    {
+        // code here 
+        vector<int> ans;
+        int i = 0, j = 0, countH = c, countV = r-1;
+        bool right = true, left = false, down = false, up = false;
+        while(countH || countV) {
+            if(right) {
+                int temp = 0;
+                while(temp++ < countH) ans.push_back(matrix[i][j++]);
+                j--;
+                i++;
+                right = false;
+                down = true;
+                countH--;
+            }
+            else if(down) {
+                int temp = 0;
+                while(temp++ < countV) ans.push_back(matrix[i++][j]);
+                i--;
+                j--;
+                down = false;
+                left = true;
+                countV--;
+            }
+            else if(left) {
+                int temp = 0;
+                while(temp++ < countH) ans.push_back(matrix[i][j--]);
+                j++;
+                i--;
+                left = false;
+                up = true;
+                countH--;
+            }
+            else {
+                int temp = 0;
+                while(temp++ < countV) ans.push_back(matrix[i--][j]);
+                i++;
+                j++;
+                up = false;
+                right = true;
+                countV--;
+            }
+            if(countH < 0 || countV < 0) break;
+        }
+        
+        return ans;
+    }
+};
+
+// { Driver Code Starts.
+int main() {
+    int t;
+    cin>>t;
+    
+    while(t--) 
+    {
+        int r,c;
+        cin>>r>>c;
+        vector<vector<int> > matrix(r); 
+
+        for(int i=0; i<r; i++)
+        {
+            matrix[i].assign(c, 0);
+            for( int j=0; j<c; j++)
+            {
+                cin>>matrix[i][j];
+            }
+        }
+
+        Solution ob;
+        vector<int> result = ob.spirallyTraverse(matrix, r, c);
+        for (int i = 0; i < result.size(); ++i)
+                cout<<result[i]<<" ";
+        cout<<endl;
+    }
+    return 0;
+}  // } Driver Code Ends

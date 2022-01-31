@@ -1,0 +1,46 @@
+// { Driver Code Starts
+// Initial Template for C++
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+//User function Template for C++
+const int mod = 1e9 + 7;
+using ll = long long;
+class Solution{
+    public:
+    int numOfWays(int n, int x)
+    {
+        // code here
+        vector<ll> dp(n+1, 0);
+        
+        int limit = pow(n, 1.0/x);
+        dp[0] = dp[1] = 1;
+        
+        for(int i = 2 ; i <= limit ; i++) {
+            int power = pow(i, x);
+            
+            for(int j = n ; j >= power ; j--) {
+                dp[j] = (dp[j] +dp[j - power])%mod;
+            }
+        }
+        
+        return dp[n];
+    }
+};
+
+// { Driver Code Starts.
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int  n, x;
+        cin >> n >> x;
+        Solution ob;
+        cout<<ob.numOfWays(n, x)<<endl;
+    }
+    return 0;
+}
+  // } Driver Code Ends

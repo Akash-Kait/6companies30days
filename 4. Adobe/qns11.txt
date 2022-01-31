@@ -1,0 +1,36 @@
+// { Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+
+
+class Solution{
+    public:
+    string amendSentence (string s)
+    {
+        // your code here
+        string ans;
+        for(auto e : s) {
+            if(isupper(e)) {
+                if(ans.size()) ans.push_back(' ');
+                ans.push_back(tolower(e));
+            }
+            else ans.push_back(e);
+        }
+        
+        return ans;
+    }
+};
+
+// { Driver Code Starts.
+int main()
+{
+	int t; cin >> t;
+	while (t--)
+	{
+		string s; cin >> s;
+		Solution ob;
+		cout << ob.amendSentence (s) << endl;
+	}
+}  // } Driver Code Ends

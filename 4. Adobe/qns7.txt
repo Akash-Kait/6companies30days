@@ -1,0 +1,50 @@
+// { Driver Code Starts
+//Initial Template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+class Solution {
+public:
+    int helper(vector<int> &A, int lo, int hi, bool turn, vector<vector<int>> &dp) {
+        if(lo == hi) {
+            if(turn) return A[lo];
+            else return 0;
+        }
+        if(dp[lo][hi] != -1) return dp[lo][hi];
+        int temp = 0;
+        if(turn) {
+            temp = max(A[lo] + helper(A, lo+1, hi, false, dp), A[hi] + helper(A, lo, hi-1, false, dp));
+        }
+        else {
+            temp = min(helper(A, lo+1, hi, true, dp), helper(A, lo, hi-1, true, dp));
+        }
+        
+        return dp[lo][hi] = temp;
+    }
+    int maxCoins(vector<int>&A,int n)
+    {
+	    //Write your code here
+	    vector<vector<int>> dp(n, vector<int> (n, -1));
+	    return helper(A, 0, n-1, true, dp);
+    }
+};
+
+// { Driver Code Starts.
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int N;
+        cin >> N;
+        vector<int>A(N);
+        for (int i = 0; i < N; i++) {
+            cin >> A[i];
+        }
+        Solution ob;
+        cout << ob.maxCoins(A, N) << "\n";
+    }
+    return 0;
+}
+  // } Driver Code Ends

@@ -1,0 +1,86 @@
+// { Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+const int MAX_DIGITS = 5;
+
+int missingNumber(const string& str);
+
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        string str;
+        cin>>str;
+        cout << missingNumber(str)<<endl;
+    }
+	return 0;
+}
+// } Driver Code Ends
+
+string toString(int num) {
+    stringstream ss;
+    ss<<num;
+    string s;
+    ss>>s;
+    return s;
+}
+int toNum(string s) {
+    stringstream ss;
+    ss<<s;
+    int num;
+    ss>>num;
+    return num;
+}
+string inc(string s) {
+    int num = toNum(s);
+    return toString(num+1);
+}
+
+/* You are required to complete this function
+which return the required missing number
+if present else return -1*/
+int missingNumber(const string& str)
+{
+    // Code here
+    int size = 1, n = str.size();
+    string ans;
+    
+    while(size <= 6) {
+        if(size > n) break;
+        int i = 0;
+        bool miss = false;
+        while(i < n) {
+            string num = str.substr(i, size);
+            // cout<<num<<endl;
+            i += size;
+            string incNum = inc(num);
+            int nextSize = incNum.size();
+            string nextStr = str.substr(i, nextSize);
+            if(incNum == nextStr) {
+                size = nextSize;
+                continue;
+            }
+            else if(!miss){
+                string temp = incNum;
+                incNum = inc(incNum);
+                nextSize = incNum.size();
+                nextStr = str.substr(i, nextSize);
+                if(incNum == nextStr) {
+                    size = nextSize;
+                    miss = true;
+                    ans = temp;
+                    continue;
+                }
+                else break;
+            }
+            else break;
+        }
+        
+        if(i == n && miss) return toNum(ans);
+        size++;
+    }
+    
+    return -1;
+}

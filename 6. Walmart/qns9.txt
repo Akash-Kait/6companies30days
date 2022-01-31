@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int mcm(int lo, int hi, vector<vector<int>>& dp) {
+        if(lo >= hi) return 0;
+        if(dp[lo][hi] != -1) return dp[lo][hi];
+        
+        
+        int cost = INT_MAX;
+        for(int i = lo ; i <= hi ; i++) {
+            cost = min(cost, i + max(mcm(lo, i-1, dp), mcm(i+1, hi, dp)));
+        }
+        
+        return dp[lo][hi] = cost;
+    }
+    int getMoneyAmount(int n) {
+        vector<vector<int>> dp(n+1, vector<int> (n+1, -1));
+        return mcm(1, n, dp);
+    }
+};

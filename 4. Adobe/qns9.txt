@@ -1,0 +1,49 @@
+// { Driver Code Starts
+//Initial template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+ // } Driver Code Ends
+//User function template for C++
+
+class Solution{
+  public:
+    string nextPalin(string N) { 
+        //complete the function here
+        
+        int n = N.size();
+        if(n <= 3) return "-1";
+        int m = n/2;
+        
+        string half = N.substr(0, m);
+        if(next_permutation(half.begin(), half.end())) {
+            string temp = half;
+            reverse(temp.begin(), temp.end());
+            
+            if(n%2 == 1) half += N[m];
+            
+            half += temp;
+            
+            return half;
+        }
+        
+        return "-1";
+    }
+};
+
+// { Driver Code Starts.
+
+int main() {
+
+    int t;
+    cin >> t;
+    while(t--){
+        string s;
+        cin >> s;
+        Solution obj;
+        cout << obj.nextPalin(s) << endl;
+    }
+    return 0;
+}  // } Driver Code Ends

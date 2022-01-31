@@ -1,0 +1,80 @@
+/*
+// Definition for a QuadTree node.
+class Node {
+public:
+    bool val;
+    bool isLeaf;
+    Node* topLeft;
+    Node* topRight;
+    Node* bottomLeft;
+    Node* bottomRight;
+    
+    Node() {
+        val = false;
+        isLeaf = false;
+        topLeft = NULL;
+        topRight = NULL;
+        bottomLeft = NULL;
+        bottomRight = NULL;
+    }
+    
+    Node(bool _val, bool _isLeaf) {
+        val = _val;
+        isLeaf = _isLeaf;
+        topLeft = NULL;
+        topRight = NULL;
+        bottomLeft = NULL;
+        bottomRight = NULL;
+    }
+    
+    Node(bool _val, bool _isLeaf, Node* _topLeft, Node* _topRight, Node* _bottomLeft, Node* _bottomRight) {
+        val = _val;
+        isLeaf = _isLeaf;
+        topLeft = _topLeft;
+        topRight = _topRight;
+        bottomLeft = _bottomLeft;
+        bottomRight = _bottomRight;
+    }
+};
+*/
+
+class Solution {
+public:
+    vector<vector<int>> getVec(vector<vector<int>>& grid, int ro, int co, int size) {
+        vector<vector<int>> vec(size, vector<int> ());
+        
+        int i = 0, j = 0;
+        while(i < size) {
+            while(j < size) {
+                vec[i].push_back(grid[i+ro][j+co]);
+                i++;
+                j++;
+            }
+        }
+        
+        return vec;
+    }
+    Node* makeTree(vector<vector<int>>& grid, int ro, int co, int size) {
+        bool val = grid[ro][co];
+        Node* root = new Node(val, true);
+        
+        for(int i = 0 ; i < size ; i++) {
+            for(int j = 0 ; j < size ; j++) {
+                if(val != grid[i+ro][j+co]) {
+                    root->isLeaf = false;
+                    root->topLeft = makeTree(grid, ro, co, size/2);
+                    root->topRight = makeTree(grid, ro, co+size/2, size/2);
+                    root->bottomLeft = makeTree(grid, ro+size/2, co, size/2);
+                    root->bottomRight = makeTree(grid, ro+size/2, co+size/2, size/2);
+                    return root;
+                }
+            }
+        }
+        
+        return root;
+    }
+    Node* construct(vector<vector<int>>& grid) {
+        int n = grid.size();
+        return makeTree(grid, 0, 0, n);
+    }
+};
